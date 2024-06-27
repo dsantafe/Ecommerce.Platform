@@ -1,45 +1,25 @@
-﻿using AutoMapper;
-using Ecommerce.Domain.DTOs;
-using Ecommerce.Domain.Entities;
-using Ecommerce.Domain.Service;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace Ecommerce.Application.Service
+﻿namespace Ecommerce.Application.Service
 {
+    using AutoMapper;
+    using Ecommerce.Domain.Data;
+    using Ecommerce.Domain.DTOs;
+    using Ecommerce.Domain.Entities;
+    using Ecommerce.Domain.Interfaces;
+    using Ecommerce.Domain.Service;
+    using Microsoft.Extensions.Caching.Memory;
+
     public class ProductService(IMemoryCache memoryCache,
-        IMapper mapper) : IProductService
+        IMapper mapper,
+        EcommerceContext ecommerceContext) : IProductService
     {
         IList<Product> _products;
-
-        private static List<Product> SeederData() => [
-                new Product
-                {
-                    Id = 1,
-                    Name = "Product 1",
-                    Description = "Product 1 Description",
-                    Price = 100
-                },
-                new Product
-                {
-                    Id = 2,
-                    Name = "Product 2",
-                    Description = "Product 2 Description",
-                    Price = 200
-                },
-                new Product
-                {
-                    Id = 3,
-                    Name = "Product 3",
-                    Description = "Product 3 Description",
-                    Price = 300
-                }
-            ];
 
         public List<ProductDTO> GetProducts()
         {
             if (!memoryCache.TryGetValue("ProductList", out _products))
             {
-                _products = SeederData();
+                IUnitOfWork _unitOfWork = new UnitOfWork(ecommerceContext);
+                _products = _unitOfWork.Repository<Product>().Get().ToList();
 
                 MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
                    .SetSlidingExpiration(TimeSpan.FromSeconds(900)) //15min
@@ -55,7 +35,7 @@ namespace Ecommerce.Application.Service
 
         public ProductDTO GetProductById(int id)
         {
-            ProductDTO product = GetProducts().FirstOrDefault(x => x.Id == id);
+            ProductDTO product = GetProducts().FirstOrDefault(x => x.ProductID == id);
             return product;
         }
     }

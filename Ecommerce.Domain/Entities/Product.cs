@@ -7,8 +7,8 @@
     public class Product
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ProductID { get; set; }
 
         [StringLength(50)]
         public string Name { get; set; }
@@ -17,5 +17,7 @@
         public string Description { get; set; }
 
         public decimal Price { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

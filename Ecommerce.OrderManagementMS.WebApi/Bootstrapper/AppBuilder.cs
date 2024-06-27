@@ -1,7 +1,9 @@
 ﻿namespace Ecommerce.OrderManagementMS.WebApi.Bootstrapper
 {
     using Ecommerce.Domain.Constants;
+    using Ecommerce.Domain.Data;
     using FluentValidation;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.OpenApi.Models;
     using System.Reflection;
@@ -22,6 +24,7 @@
             builder.Services.AddSingleton<IMemoryCache>(memoryCache);
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EccomerceContext")));
 
             builder.Services.AddSwaggerGen(options =>
             {

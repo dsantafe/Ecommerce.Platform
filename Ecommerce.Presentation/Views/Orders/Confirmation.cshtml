@@ -1,0 +1,38 @@
+﻿@model Ecommerce.Domain.DTOs.OrderCreateDTO
+@{
+    ViewBag.Title = "Confirmación de Compra";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<h2>Gracias por su compra, @Model.Customer.Name!</h2>
+<p>Correo: @Model.Customer.Email</p>
+
+<h3>Productos Comprados</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price</td>
+                <td>@item.Subtotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right"><strong>Total:</strong></td>
+            <td>@Model.Items.Sum(i => i.Subtotal).ToString("C")</td>
+        </tr>
+    </tfoot>
+</table>

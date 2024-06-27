@@ -2,6 +2,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Configuración de la sesión
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Duración de la sesión
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Necesario para la GDPR si aplica
+});
 
 var app = builder.Build();
 
@@ -15,10 +22,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
+// Añadir el middleware de sesión
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

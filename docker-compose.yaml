@@ -2,16 +2,17 @@ version: '3.8'
 
 services:
   ecommerce-platform:
-    image: ecommerce-platform:latest
+    image: dsantafe/ecommerce-platform:latest
     ports:
       - "3000:8080"
     environment:
       - PRODUCTS_SERVICE=${PRODUCTS_SERVICE}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     depends_on:
       - ms-product-catalog
 
   ms-product-catalog:
-    image: ms-products:latest
+    image: dsantafe/ms-product-catalog:latest
     ports:
       - "3001:8080"
     environment:

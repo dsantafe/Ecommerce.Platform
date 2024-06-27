@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  ecommerce-platform:
+    image: ecommerce-platform:latest
+    ports:
+      - "3000:8080"
+    environment:
+      - PRODUCTS_SERVICE=${PRODUCTS_SERVICE}
+    depends_on:
+      - ms-product-catalog
+
+  ms-product-catalog:
+    image: ms-products:latest
+    ports:
+      - "3001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}

@@ -22,9 +22,9 @@ namespace Ecommerce.Application.Service
         private static List<OrderDetail> SeederData() => [
                 new OrderDetail
                 {
-                    OrderDetailId = 1,
-                    OrderId = 1,
-                    ProductId = 1,
+                    OrderDetailID = 1,
+                    OrderID = 1,
+                    ProductID = 1,
                     UnitPrice = 100,
                     Quantity = 1,
                     Subtotal = 30
@@ -32,18 +32,18 @@ namespace Ecommerce.Application.Service
                 },
                  new OrderDetail
                 {
-                    OrderDetailId = 2,
-                    OrderId = 2,
-                    ProductId = 2,
+                    OrderDetailID = 2,
+                    OrderID = 2,
+                    ProductID = 2,
                     UnitPrice = 100,
                     Quantity = 1,
                     Subtotal = 30
                 },
                  new OrderDetail
                 {
-                    OrderDetailId = 3,
-                    OrderId = 3,
-                    ProductId = 3,
+                    OrderDetailID = 3,
+                    OrderID = 3,
+                    ProductID = 3,
                     UnitPrice = 100,
                     Quantity = 2,
                     Subtotal = 30
@@ -82,8 +82,8 @@ namespace Ecommerce.Application.Service
             }
              var orderdetails = _orderDetails.Select(x => new OrderDetailDto()
              {
-                  OrderId = x.OrderId,
-                  ProductId= x.ProductId,
+                  OrderId = x.OrderID,
+                  ProductId= x.ProductID,
                   UnitPrice = x.UnitPrice,
                   Quantity = x.Quantity,
                   Subtotal = x.Subtotal,

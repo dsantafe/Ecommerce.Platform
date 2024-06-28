@@ -27,9 +27,6 @@ using System.Threading.Tasks;
 
         public DateTime OrderDate { get; set; }
 
-        [StringLength(50)]
-        public  string CustomerEmail { get; set; }
-        public  DateTime OrderDate { get; set; }
         public decimal Total { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

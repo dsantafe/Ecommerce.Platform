@@ -111,12 +111,7 @@
                      "Inicializa una nueva orden con los valores proporcionados, la inserta en el repositorio " +
                      "y la guarda en la base de datos. " +
                      "Finalmente, mapea la orden creada a un objeto OrderDTO y la retorna.")
-            .WithOpenApi(generatedOperation =>
-            {
-                var parameter = generatedOperation.Parameters[0];
-                parameter.Description = "El objeto de la orden con su detalle.";
-                return generatedOperation;
-            })
+            .WithOpenApi()
             .WithTags("Orders")
             .Produces(400)
             .Produces(201)

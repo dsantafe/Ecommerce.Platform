@@ -1,34 +1,57 @@
-# Despliegue de servicios (frontend y backends) en Docker del E-commerce Platform
-Este repositorio contiene los archivos y comandos necesarios para desplegar los servicios (frontend y backends) en Docker del E-commerce Platform
+# Deployment of services (frontend and backends) in Docker of the E-commerce Platform
+This repository contains the files and commands necessary to deploy the services (frontend and backends) in Docker of the E-commerce Platform
 
-1. Clona este repositorio:
+1. Clone this repository:
 ```shell
-git clone https://github.com/dsantafe/Ecommerce.Platform
-cd Ecommerce.Platform
+$ git clone https://github.com/dsantafe/Ecommerce.Platform
+$ cd Ecommerce.Platform
 ```
 
-2. Construir la imagen:
+2. Build the Docker image:
 ```shell
-$ docker build -t ms-frontend:1.0 frontend/.
-$ docker build -t ms-products:1.0 products/.
+$ docker build -t ms-product-catalog -f Ecommerce.ProductCatalogMS.WebApi.Dockerfile .
+$ docker build -t ms-order-management -f Ecommerce.OrderManagementMS.WebApi.Dockerfile .
+$ docker build -t ecommerce-platform -f Ecommerce.Presentation.Dockerfile .
 $ docker images
 ```
 
-3. Ejecutar los contenedores a partir de las imagenes:
+3. Run the Docker containers from the images:
 ```shell
-$ docker run --name ms-frontend -d -p 3000:3000 \
--e PRODUCTS_SERVICE=host.docker.internal \
--e SHOPPING_CART_SERVICE=host.docker.internal \
--e MERCHANDISE_SERVICE=host.docker.internal \
-ms-frontend:1.0
+$ docker run --name ecommerce-platform -d -p 3000:8080 \
+-e PRODUCTS_SERVICE=http://host.docker.internal:3001 \
+-e ORDERS_SERVICE=http://host.docker.internal:3002 \
+-e ASPNETCORE_ENVIRONMENT=Development \
+ecommerce-platform
 
-$ docker run --name ms-products -d -p 3001:3001 ms-products:1.0
-$ docker run --name ms-shopping-cart -d -p 3002:3002 ms-shopping-cart:1.0
-$ docker run --name ms-merchandise -d -p 3003:3003 ms-merchandise:1.0
+$ docker run --name ms-product-catalog -d -p 3001:8080 \
+-e ASPNETCORE_ENVIRONMENT=Development \
+ms-product-catalog
+
+$ docker run --name ms-order-management -d -p 3002:8080 \
+-e ASPNETCORE_ENVIRONMENT=Development \
+ms-order-management
+
+$ docker ps
 ```
 
-Nota: También puedes ejecutar los contenedores a partir de un Docker Compose:
+Note: You can also run containers from a Docker Compose:
 ```shell
 $ docker-compose -p ecommerce-platform-fullstack --env-file .env.dev up -d --build
 $ docker ps
 ```
+
+4. Access the application http://localhost:3000
+
+## Architecture
+
+![architecture](./assets/architecture.png)
+
+## A template for an API using Clean Architecture and .NET Minimal API's.
+
+![template](./assets/template.png)
+
+# Links
+- Config repo: https://github.com/dsantafe/Ecommerce.Platform
+- Docs E-commerce Platform repo: https://gist.github.com/AndresLinktic/3e26ea0c4786e81f80b316432687a583
+- Docker repo: https://hub.docker.com/repository/docker/dsantafe
+- Killercoda Interactive Environments: https://killercoda.com/

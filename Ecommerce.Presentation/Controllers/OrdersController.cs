@@ -8,13 +8,12 @@
     public class OrdersController : Controller
     {
         private static IList<ProductDTO> Products;
-        private static List<CartItemDTO> CartItems = [];
-        string urlBaseProductCatalogMs = Environment.GetEnvironmentVariable("PRODUCTS_SERVICE");
-        string urlBaseOrderManagementMs = Environment.GetEnvironmentVariable("ORDERS_SERVICE");
+        private static readonly List<CartItemDTO> CartItems = [];
+        private readonly string urlBaseProductCatalogMs = Environment.GetEnvironmentVariable("PRODUCTS_SERVICE");
+        private readonly string urlBaseOrderManagementMs = Environment.GetEnvironmentVariable("ORDERS_SERVICE");
 
         public IActionResult Cart()
         {
-            
             ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseProductCatalogMs}/api/products"));
             Products = JsonConvert.DeserializeObject<IList<ProductDTO>>(response.Data.ToString());
             ViewData["Products"] = Products;
@@ -70,6 +69,16 @@
         [HttpPost]
         public IActionResult Checkout(CustomerDTO customer)
         {
+            if (CartItems.Count == 0)
+                ModelState.AddModelError("quantity", "No se han agregado productos a la compra.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["Products"] = Products;
+                ViewBag.CartItems = CartItems;
+                return View(nameof(Cart), customer);
+            }
+
             OrderCreateDTO order = new()
             {
                 Customer = customer,

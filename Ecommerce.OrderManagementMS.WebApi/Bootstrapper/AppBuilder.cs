@@ -13,6 +13,11 @@
     /// </summary>
     public static class AppBuilder
     {
+        /// <summary>
+        /// Get App
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static WebApplication GetApp(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

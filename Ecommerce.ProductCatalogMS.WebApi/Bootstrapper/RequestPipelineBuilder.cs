@@ -5,6 +5,10 @@
     /// </summary>
     public static class RequestPipelineBuilder
     {
+        /// <summary>
+        /// Configure
+        /// </summary>
+        /// <param name="app"></param>
         public static void Configure(WebApplication app)
         {
             // Configure the HTTP request pipeline.

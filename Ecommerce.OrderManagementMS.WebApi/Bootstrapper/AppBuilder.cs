@@ -2,8 +2,10 @@
 {
     using Ecommerce.Application.Service;
     using Ecommerce.Domain.Constants;
+    using Ecommerce.Domain.Data;
     using Ecommerce.Domain.Interfaces;
     using FluentValidation;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.OpenApi.Models;
     using System.Reflection;
@@ -13,6 +15,11 @@
     /// </summary>
     public static class AppBuilder
     {
+        /// <summary>
+        /// Get App
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static WebApplication GetApp(string[] args)
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -24,6 +31,7 @@
             builder.Services.AddSingleton<IMemoryCache>(memoryCache);
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EccomerceContext")));
 
             builder.Services.AddSwaggerGen(options =>
             {

@@ -4,7 +4,9 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PRODUCTS_SERVICE": "http://localhost:5174",
+        "ORDERS_SERVICE": "http://localhost:5175"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5272"

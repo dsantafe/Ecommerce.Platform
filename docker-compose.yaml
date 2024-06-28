@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  ecommerce-platform:
+    image: dsantafe/ecommerce-platform:latest
+    ports:
+      - "3000:8080"
+    environment:
+      - PRODUCTS_SERVICE=${PRODUCTS_SERVICE}
+      - ORDERS_SERVICE=${ORDERS_SERVICE}
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    depends_on:
+      - ms-product-catalog
+      - ms-order-management
+
+  ms-product-catalog:
+    image: dsantafe/ms-product-catalog:latest
+    ports:
+      - "3001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+  ms-order-management:
+    image: dsantafe/ms-order-management:latest
+    ports:
+      - "3002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}

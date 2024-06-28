@@ -1,0 +1,77 @@
+﻿@model Ecommerce.Domain.DTOs.CustomerDTO
+@{
+    ViewBag.Title = "Página de Compras";
+    var products = ViewData["Products"] as List<Ecommerce.Domain.DTOs.ProductDTO>;
+    var cart = ViewBag.CartItems as List<Ecommerce.Domain.DTOs.CartItemDTO>;
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post">
+    <h2>Información del Cliente</h2>  
+
+    <div class="form-floating">
+        <input type="text" id="Name" asp-for="Name" class="form-control" />
+        <label for="Name">Nombre</label>
+    </div>
+
+    <div class="form-floating">
+        <input type="email" id="Email" asp-for="Email" class="form-control" />
+        <label for="Email">Correo</label>
+    </div>
+
+    <h2>Agregar Producto</h2>
+    <div>
+        <label for="Product">Producto:</label>
+        <select id="Product" name="productId" class="form-control">
+            @foreach (var product in products)
+            {
+                <option value="@product.ProductID">@product.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-floating">
+        <input type="number" id="Quantity" name="quantity" class="form-control" value="0" />
+        <label for="Quantity">Cantidad</label>
+    </div>
+    <button type="submit" formaction="/Orders/AddToCart" class="btn btn-outline-primary">Agregar al Carro</button>
+    <button type="submit" formaction="/Orders/Checkout" class="btn btn-outline-success">Confirmar Compra</button>
+</form>
+
+<h2>Carro de Compras</h2>
+@if (cart.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in cart)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@item.Subtotal.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                <td>@cart.Sum(i => i.Subtotal).ToString("C")</td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <p>No hay productos en el carro.</p>
+}

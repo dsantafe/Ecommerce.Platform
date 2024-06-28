@@ -1,8 +1,10 @@
 ﻿namespace Ecommerce.OrderManagementMS.WebApi.Bootstrapper
 {
     using Ecommerce.Application.Service;
+    using Ecommerce.Application.Validators;
     using Ecommerce.Domain.Constants;
     using Ecommerce.Domain.Data;
+    using Ecommerce.Domain.DTOs;
     using Ecommerce.Domain.Interfaces;
     using FluentValidation;
     using Microsoft.EntityFrameworkCore;
@@ -30,7 +32,6 @@
             MemoryCache memoryCache = new(new MemoryCacheOptions { SizeLimit = CacheConstant.SizeLimit });
             builder.Services.AddSingleton<IMemoryCache>(memoryCache);
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
             builder.Services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EccomerceContext")));
 
             builder.Services.AddSwaggerGen(options =>
@@ -54,6 +55,7 @@
             // Services
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
+            builder.Services.AddScoped<IValidator<OrderCreateDTO>, OrderCreateValidator>();
 
             // Logs
             builder.Logging.ClearProviders();

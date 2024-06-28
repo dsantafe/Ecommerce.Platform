@@ -8,9 +8,9 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Ecommerce.Application.Service
 {
     public class OrderService(IMemoryCache memoryCache,
-        IMapper mapper, EcommerceContext ecommerceContext) : IOrderService
+        IMapper mapper, 
+        EcommerceContext ecommerceContext) : IOrderService
     {
-        
         IList<Order> _order;
         public OrderDto GetOrderById(int id)
         {
@@ -22,9 +22,8 @@ namespace Ecommerce.Application.Service
         {
             if (!memoryCache.TryGetValue("OrderList", out _order))
             {
-               IUnitOfWork unitOfWork = new UnitOfWork(ecommerceContext);
+                IUnitOfWork unitOfWork = new UnitOfWork(ecommerceContext);
                 _order = unitOfWork.Repository<Order>().Get().ToList();
-
 
                 MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
                    .SetSlidingExpiration(TimeSpan.FromSeconds(900)) //15min
@@ -36,6 +35,21 @@ namespace Ecommerce.Application.Service
             }
 
             return _order.Select(x => mapper.Map<OrderDto>(x)).ToList();
+        }
+
+        public OrderDto CreateOrder(string customerName, string customerEmail, decimal total)
+        {
+            Order order = new()
+            {
+                CustomerName = customerName,
+                CustomerEmail = customerEmail,
+                OrderDate = DateTime.UtcNow,
+                Total = total
+            };
+            IUnitOfWork unitOfWork = new UnitOfWork(ecommerceContext);
+            unitOfWork.Repository<Order>().Insert(order);
+            unitOfWork.Save();
+            return GetOrderById(order.OrderID);
         }
     }
 }

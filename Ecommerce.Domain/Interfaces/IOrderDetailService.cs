@@ -1,9 +1,4 @@
 ﻿using Ecommerce.Domain.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ecommerce.Domain.Interfaces
 {
@@ -11,5 +6,6 @@ namespace Ecommerce.Domain.Interfaces
     {
         List<OrderDetailDto> GetOrderDetails();
         OrderDetailDto GetOrderDetailById(int orderId);
+        OrderDetailDto CreateOrderDetail(int orderID, int productID, int quantity, decimal unitPrice);
     }
 }

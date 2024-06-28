@@ -1,5 +1,4 @@
-﻿using Ecommerce.Application.Service;
-using Ecommerce.Domain.DTOs;
+﻿using Ecommerce.Domain.DTOs;
 using Ecommerce.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,7 @@ namespace Ecommerce.OrderManagementMS.WebApi.Endpoints
     {
         public static void RegisterApis(WebApplication app)
         {
-            app.MapGet("/api/ordersDetails", ([FromServices] IOrderDetailService orderDetailsService) =>
+            app.MapGet("/api/orderdetails", ([FromServices] IOrderDetailService orderDetailsService) =>
             {
                 List<OrderDetailDto> orderDetails = orderDetailsService.GetOrderDetails();
                 ResponseDTO response = new()
@@ -19,10 +18,10 @@ namespace Ecommerce.OrderManagementMS.WebApi.Endpoints
                     Data = orderDetails
                 };
                 return Results.Ok(response);
-            }).WithName("orderDetails")
+            }).WithName("Order Detail")
             .Produces<List<OrderDto>>(200);
 
-            app.MapGet("/api/order/{id:int}", ([FromServices] IOrderDetailService orderDetailsService,
+            app.MapGet("/api/orderdetails/{id:int}", ([FromServices] IOrderDetailService orderDetailsService,
                 [FromRoute] int id) =>
             {
                 ResponseDTO response = new();
@@ -40,7 +39,7 @@ namespace Ecommerce.OrderManagementMS.WebApi.Endpoints
                 response.Data = orderDetail;
 
                 return Results.Ok(response);
-            }).WithName("order By Id")
+            }).WithName("Order Detail By Id")
             .Produces<List<OrderDetailDto>>(200)
             .Produces(404);
         }

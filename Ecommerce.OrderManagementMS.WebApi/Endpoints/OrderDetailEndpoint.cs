@@ -15,7 +15,6 @@
         /// <param name="app"></param>
         public static void RegisterApis(WebApplication app)
         {
-
             app.MapGet("/api/orderdetails/orderid/{id:int}", ([FromServices] IOrderDetailService orderDetailsService,
                 [FromRoute] int id) =>
             {

@@ -14,6 +14,14 @@
         private readonly UnitOfWork unitOfWork = new(ecommerceContext);
         IList<Product> products;
 
+        /// <summary>
+        /// Obtiene una lista de productos (ProductDTO).
+        /// Primero, intenta recuperar los productos de la memoria caché utilizando la clave "ProductList".
+        /// Si los productos no están en caché, los recupera del repositorio y los almacena en la caché
+        /// con opciones específicas de expiración y prioridad.
+        /// Finalmente, mapea y devuelve la lista de productos como objetos ProductDTO.
+        /// </summary>
+        /// <returns>Lista de productos mapeados como ProductDTO.</returns>
         public List<ProductDTO> GetProducts()
         {
             if (!memoryCache.TryGetValue("ProductList", out products))
@@ -32,6 +40,12 @@
             return products.Select(x => mapper.Map<ProductDTO>(x)).ToList();
         }
 
+        /// <summary>
+        /// Obtiene un producto específico (ProductDTO) por su identificador.
+        /// Recupera el producto del repositorio utilizando el identificador proporcionado y lo mapea a un objeto ProductDTO.
+        /// </summary>
+        /// <param name="id">El identificador del producto.</param>
+        /// <returns>El producto mapeado como ProductDTO.</returns>
         public ProductDTO GetProductById(int id)
         {
             ProductDTO product = mapper.Map<ProductDTO>(unitOfWork.Repository<Product>().GetByID(id));

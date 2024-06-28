@@ -27,7 +27,14 @@
                 };
                 return Results.Ok(response);
             }).WithName("Products")
-            .Produces<List<ProductDTO>>(200);
+            .WithDescription("Obtiene una lista de productos (ProductDTO). " +
+                     "Primero, intenta recuperar los productos de la memoria caché utilizando la clave 'ProductList'. " +
+                     "Si los productos no están en caché, los recupera del repositorio y los almacena en la caché " +
+                     "con opciones específicas de expiración y prioridad. " +
+                     "Finalmente, mapea y devuelve la lista de productos como objetos ProductDTO.")
+            .WithOpenApi()
+            .WithTags("Products")
+            .Produces<ResponseDTO>(200);
 
             app.MapGet("/api/products/{id:int}", ([FromServices] IProductService productService,
                 [FromRoute] int id) =>
@@ -48,7 +55,16 @@
 
                 return Results.Ok(response);
             }).WithName("Product By Id")
-            .Produces<List<ProductDTO>>(200)
+            .WithDescription("Obtiene un producto específico (ProductDTO) por su identificador. " +
+                     "Recupera el producto del repositorio utilizando el identificador proporcionado y lo mapea a un objeto ProductDTO.")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "El identificador del producto.";
+                return generatedOperation;
+            })
+            .WithTags("Products")
+            .Produces<ResponseDTO>(200)
             .Produces(404);
         }
     }

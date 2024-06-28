@@ -32,7 +32,17 @@
 
                 return Results.Ok(response);
             }).WithName("Order Details By Order Id")
-            .Produces<List<OrderDetailDTO>>(200)
+            .WithDescription("Obtiene los detalles de una orden específica (OrderDetailDTO) por el identificador de la orden. " +
+                     "Recupera los detalles de la orden del repositorio utilizando el identificador de la orden proporcionado " +
+                     "y los mapea a objetos OrderDetailDTO.")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "El identificador de la orden.";
+                return generatedOperation;
+            })
+            .WithTags("Order Detail")
+            .Produces<ResponseDTO>(200)
             .Produces(404);
         }
     }

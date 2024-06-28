@@ -23,12 +23,16 @@
                 ResponseDTO response = new()
                 {
                     IsSuccess = true,
-                    Message = "orders found",
+                    Message = "Orders found",
                     Data = orders
                 };
                 return Results.Ok(response);
-            }).WithName("orders")
-            .Produces<List<OrderDTO>>(200);
+            }).WithName("Orders")
+            .WithDescription("Obtiene una lista de órdenes (OrderDTO). " +
+                     "Recupera todas las órdenes del repositorio, las mapea a objetos OrderDTO y las retorna.")
+            .WithOpenApi()
+            .WithTags("Orders")
+            .Produces<ResponseDTO>(200);
 
             app.MapGet("/api/orders/{id:int}", ([FromServices] IOrderService orderService,
                 [FromRoute] int id) =>
@@ -47,7 +51,17 @@
 
                 return Results.Ok(response);
             }).WithName("Order By Id")
-            .Produces<List<OrderDTO>>(200)
+            .WithDescription("Obtiene una orden específica (OrderDTO) por su identificador. " +
+                     "Recupera la orden del repositorio utilizando el identificador proporcionado " +
+                     "y la mapea a un objeto OrderDTO.")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "El identificador de la orden.";
+                return generatedOperation;
+            })
+            .WithTags("Orders")
+            .Produces<ResponseDTO>(200)
             .Produces(404);
 
             app.MapPost("/api/orders", async ([FromServices] IValidator<OrderCreateDTO> validator,
@@ -92,7 +106,21 @@
                     response.Message = ex.Message;
                     return Results.Ok(response);
                 }
-            }).WithName("Create Order");
+            }).WithName("Create Order")
+            .WithDescription("Crea una nueva orden (OrderDTO). " +
+                     "Inicializa una nueva orden con los valores proporcionados, la inserta en el repositorio " +
+                     "y la guarda en la base de datos. " +
+                     "Finalmente, mapea la orden creada a un objeto OrderDTO y la retorna.")
+            .WithOpenApi(generatedOperation =>
+            {
+                var parameter = generatedOperation.Parameters[0];
+                parameter.Description = "El objeto de la orden con su detalle.";
+                return generatedOperation;
+            })
+            .WithTags("Orders")
+            .Produces(400)
+            .Produces(201)
+            .Produces<ResponseDTO>(200);
         }
     }
 }

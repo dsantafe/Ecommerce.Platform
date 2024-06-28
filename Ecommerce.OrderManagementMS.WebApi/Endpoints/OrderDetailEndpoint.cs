@@ -9,24 +9,12 @@ namespace Ecommerce.OrderManagementMS.WebApi.Endpoints
     {
         public static void RegisterApis(WebApplication app)
         {
-            app.MapGet("/api/ordersDetails", ([FromServices] IOrderDetailService orderDetailsService) =>
-            {
-                List<OrderDetailDto> orderDetails = orderDetailsService.GetOrderDetails();
-                ResponseDTO response = new()
-                {
-                    IsSuccess = true,
-                    Message = "orders found",
-                    Data = orderDetails
-                };
-                return Results.Ok(response);
-            }).WithName("orderDetails")
-            .Produces<List<OrderDto>>(200);
 
-            app.MapGet("/api/order/{id:int}", ([FromServices] IOrderDetailService orderDetailsService,
+            app.MapGet("/api/orderDetailById/{id:int}", ([FromServices] IOrderDetailService orderDetailsService,
                 [FromRoute] int id) =>
             {
                 ResponseDTO response = new();
-                OrderDetailDto orderDetail = orderDetailsService.GetOrderDetailById(id);
+               List<OrderDetailDto> orderDetail = orderDetailsService.GetOrderDetailById(id);
                 if (orderDetail is null)
                 {
                     response.IsSuccess = false;
@@ -40,7 +28,7 @@ namespace Ecommerce.OrderManagementMS.WebApi.Endpoints
                 response.Data = orderDetail;
 
                 return Results.Ok(response);
-            }).WithName("order By Id")
+            }).WithName("order Detail By Id")
             .Produces<List<OrderDetailDto>>(200)
             .Produces(404);
         }

@@ -4,6 +4,7 @@
     using Ecommerce.Domain.DTOs;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
+    using System.Text.Json.Serialization.Metadata;
 
     public class OrdersController : Controller
     {
@@ -12,6 +13,19 @@
         private readonly string urlBaseProductCatalogMs = Environment.GetEnvironmentVariable("PRODUCTS_SERVICE");
         private readonly string urlBaseOrderManagementMs = Environment.GetEnvironmentVariable("ORDERS_SERVICE");
 
+        public ActionResult Index(int? id)
+        {
+            ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseOrderManagementMs}/api/orders"));
+            IList<OrderDto> Orders = JsonConvert.DeserializeObject<IList<OrderDto>>(response.Data.ToString());
+            if (id!= null)
+            {
+                ResponseDTO responseDetails = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseOrderManagementMs}/api/orderDetailById/{id}"));
+              IList<OrderDetailDto> orderDetail = JsonConvert.DeserializeObject<IList<OrderDetailDto>>(responseDetails.Data.ToString());
+                ViewData["OrderDetails"] = orderDetail;
+            }
+            
+            return View(Orders);
+        }
         public IActionResult Cart()
         {
             ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseProductCatalogMs}/api/products"));

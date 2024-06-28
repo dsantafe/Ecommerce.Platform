@@ -9,7 +9,6 @@ namespace Ecommerce.Domain.Interfaces
 {
     public interface IOrderDetailService
     {
-        List<OrderDetailDto> GetOrderDetails();
-        OrderDetailDto GetOrderDetailById(int orderId);
+        List<OrderDetailDto> GetOrderDetailById(int orderId);
     }
 }

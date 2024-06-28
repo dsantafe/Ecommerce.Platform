@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Ecommerce.Domain.DTOs.OrderDto>
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h2>Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Correo</th>
+            <th>Fecha</th>
+            <th>Total</th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Order in Model)
+        {
+            <tr>
+                <td>@Order.CustomerName</td>
+                <td>@Order.CustomerEmail</td>
+                <td>@Order.OrderDate</td>
+                <td>@Order.Total</td>
+                <td><a class="btn btn-outline-info" asp-area="" asp-controller="Orders" asp-action="Index" asp-route-id="@Order.OrderID">Ver</a></td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    @if (ViewData["OrderDetails"]!= null)
+    {
+    <h2>Detalle de Orden</h2>
+    var orderDetails = ViewData["OrderDetails"] as List<Ecommerce.Domain.DTOs.OrderDetailDto>; 
+        <table class="table">
+    <thead>
+        <tr>
+             <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>SubTotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Orderdetail in orderDetails)
+        {
+            <tr>
+                <td>@Orderdetail.ProductName</td>
+                <td>@Orderdetail.Quantity</td>
+                <td>@Orderdetail.UnitPrice</td>
+                <td>@Orderdetail.Subtotal</td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    }

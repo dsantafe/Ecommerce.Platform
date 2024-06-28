@@ -10,7 +10,7 @@ namespace Ecommerce.Domain.Configs
         {
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
-            CreateMap<OrderDetail, OrderDetail>().ReverseMap();
+            CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
         }
     }
 }

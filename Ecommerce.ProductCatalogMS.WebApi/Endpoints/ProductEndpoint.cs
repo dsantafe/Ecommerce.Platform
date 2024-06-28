@@ -1,17 +1,17 @@
 ﻿namespace Ecommerce.ProductCatalogMS.WebApi.Endpoints
 {
-    using Ecommerce.Domain.DTOs;
+    using Ecommerce.Application.DTOs;
     using Ecommerce.Domain.Service;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Minimal APIs Health Checker and Metrics Collector
+    /// Product Endpoint
     /// </summary>
     public class ProductEndpoint
     {
         /// <summary>
-        /// Registro de APIs
+        /// Register Product APIs
         /// </summary>
         /// <param name="app"></param>
         public static void RegisterApis(WebApplication app)

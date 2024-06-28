@@ -1,43 +1,28 @@
-﻿using AutoMapper;
-using Ecommerce.Domain.Data;
-using Ecommerce.Domain.DTOs;
-using Ecommerce.Domain.Entities;
-using Ecommerce.Domain.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace Ecommerce.Application.Service
+﻿namespace Ecommerce.Application.Service
 {
-    public class OrderService(IMemoryCache memoryCache,
-        IMapper mapper, 
-        EcommerceContext ecommerceContext) : IOrderService
+    using AutoMapper;
+    using Ecommerce.Application.DTOs;
+    using Ecommerce.Application.Interfaces;
+    using Ecommerce.Domain.Data;
+    using Ecommerce.Domain.Entities;
+
+    public class OrderService(IMapper mapper, EcommerceContext ecommerceContext) : IOrderService
     {
-        IList<Order> _order;
-        public OrderDto GetOrderById(int id)
+        private readonly UnitOfWork unitOfWork = new(ecommerceContext);        
+
+        public List<OrderDTO> GetOrders()
         {
-            OrderDto order = GetOrders().FirstOrDefault(x => x.OrderID == id);
+            IList<Order> orders = unitOfWork.Repository<Order>().Get().ToList();
+            return orders.Select(x => mapper.Map<OrderDTO>(x)).ToList();
+        }
+
+        public OrderDTO GetOrderById(int id)
+        {
+            OrderDTO order = mapper.Map<OrderDTO>(unitOfWork.Repository<Order>().GetByID(id));
             return order;
         }
 
-        public List<OrderDto> GetOrders()
-        {
-            if (!memoryCache.TryGetValue("OrderList", out _order))
-            {
-                IUnitOfWork unitOfWork = new UnitOfWork(ecommerceContext);
-                _order = unitOfWork.Repository<Order>().Get().ToList();
-
-                MemoryCacheEntryOptions cacheEntryOptions = new MemoryCacheEntryOptions()
-                   .SetSlidingExpiration(TimeSpan.FromSeconds(900)) //15min
-                   .SetAbsoluteExpiration(TimeSpan.FromSeconds(1800)) // 30min
-                   .SetPriority(CacheItemPriority.Normal)
-                   .SetSize(_order.Count);
-
-                memoryCache.Set("OrderList", _order, cacheEntryOptions);
-            }
-
-            return _order.Select(x => mapper.Map<OrderDto>(x)).ToList();
-        }
-
-        public OrderDto CreateOrder(string customerName, string customerEmail, decimal total)
+        public OrderDTO CreateOrder(string customerName, string customerEmail, decimal total)
         {
             Order order = new()
             {
@@ -46,7 +31,6 @@ namespace Ecommerce.Application.Service
                 OrderDate = DateTime.UtcNow,
                 Total = total
             };
-            IUnitOfWork unitOfWork = new UnitOfWork(ecommerceContext);
             unitOfWork.Repository<Order>().Insert(order);
             unitOfWork.Save();
             return GetOrderById(order.OrderID);

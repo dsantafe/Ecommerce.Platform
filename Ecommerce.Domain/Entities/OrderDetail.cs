@@ -21,10 +21,8 @@
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public decimal Subtotal { get; set; }
 
-        #region ..::Virtual::..
         public virtual Order Order { get; set; }
 
         public virtual Product Product { get; set; }
-        #endregion
     }
 }

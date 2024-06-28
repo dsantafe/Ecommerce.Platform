@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Application.Validators
 {
-    using Ecommerce.Domain.DTOs;
+    using Ecommerce.Application.DTOs;
     using FluentValidation;
 
     public class OrderCreateValidator : AbstractValidator<OrderCreateDTO>

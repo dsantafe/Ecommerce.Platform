@@ -1,4 +1,4 @@
-﻿namespace Ecommerce.Domain.DTOs
+﻿namespace Ecommerce.Application.DTOs
 {
     using System.ComponentModel.DataAnnotations;
 

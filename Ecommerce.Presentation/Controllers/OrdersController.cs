@@ -1,7 +1,7 @@
 ﻿namespace Ecommerce.Presentation.Controllers
 {
+    using Ecommerce.Application.DTOs;
     using Ecommerce.Application.Service;
-    using Ecommerce.Domain.DTOs;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
@@ -11,6 +11,20 @@
         private static readonly List<CartItemDTO> CartItems = [];
         private readonly string urlBaseProductCatalogMs = Environment.GetEnvironmentVariable("PRODUCTS_SERVICE");
         private readonly string urlBaseOrderManagementMs = Environment.GetEnvironmentVariable("ORDERS_SERVICE");
+
+        public ActionResult Index(int? id)
+        {
+            ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseOrderManagementMs}/api/orders"));
+            IList<OrderDTO> Orders = JsonConvert.DeserializeObject<IList<OrderDTO>>(response.Data.ToString());
+            if (id != null)
+            {
+                ResponseDTO responseDetails = JsonConvert.DeserializeObject<ResponseDTO>(ConsumeApiService.ConsumeGet($"{urlBaseOrderManagementMs}/api/orderdetails/orderid/{id}"));
+                IList<OrderDetailDTO> orderDetail = JsonConvert.DeserializeObject<IList<OrderDetailDTO>>(responseDetails.Data.ToString());
+                ViewData["OrderDetails"] = orderDetail;
+            }
+
+            return View(Orders);
+        }
 
         public IActionResult Cart()
         {
@@ -85,11 +99,15 @@
                 Items = CartItems
             };
 
-            // Aquí podrías procesar la orden, guardarla en una base de datos, etc.
-            //string result = ConsumeApiService.ConsumePost($"{urlBaseOrderManagementMs}/api/orders", JsonConvert.SerializeObject(order));
+            string result = ConsumeApiService.ConsumePost($"{urlBaseOrderManagementMs}/api/orders", JsonConvert.SerializeObject(order));
+            ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(result);
+            if (!response.IsSuccess)
+            {
+                ModelState.AddModelError("error", response.Message);
+                return RedirectToAction(nameof(Cart));
+            }
 
             TempData["Order"] = JsonConvert.SerializeObject(order);
-
             return RedirectToAction(nameof(Confirmation));
         }
 

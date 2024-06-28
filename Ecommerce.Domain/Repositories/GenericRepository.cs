@@ -1,19 +1,13 @@
-﻿using Ecommerce.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-
-namespace Ecommerce.Domain.Repositories
+﻿namespace Ecommerce.Domain.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
-    {
-        internal DbContext _context;
-        internal DbSet<TEntity> dbSet;
+    using Ecommerce.Domain.Interfaces;
+    using Microsoft.EntityFrameworkCore;
+    using System.Linq.Expressions;
 
-        public GenericRepository(DbContext context)
-        {
-            this._context = context;
-            this.dbSet = context.Set<TEntity>();
-        }
+    public class GenericRepository<TEntity>(DbContext context) : IGenericRepository<TEntity> where TEntity : class
+    {
+        internal DbContext _context = context;
+        internal DbSet<TEntity> dbSet = context.Set<TEntity>();
 
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,

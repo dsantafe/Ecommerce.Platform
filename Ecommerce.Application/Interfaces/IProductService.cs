@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce.Domain.Service
 {
-    using Ecommerce.Domain.DTOs;
+    using Ecommerce.Application.DTOs;
 
     public interface IProductService
     {

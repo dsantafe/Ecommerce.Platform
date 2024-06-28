@@ -1,11 +1,11 @@
 ﻿namespace Ecommerce.OrderManagementMS.WebApi.Bootstrapper
 {
+    using Ecommerce.Application.DTOs;
+    using Ecommerce.Application.Interfaces;
     using Ecommerce.Application.Service;
     using Ecommerce.Application.Validators;
     using Ecommerce.Domain.Constants;
     using Ecommerce.Domain.Data;
-    using Ecommerce.Domain.DTOs;
-    using Ecommerce.Domain.Interfaces;
     using FluentValidation;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Caching.Memory;

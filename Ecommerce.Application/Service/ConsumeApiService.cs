@@ -2,13 +2,14 @@
 {
     using Ecommerce.Application.Extensions;
     using Newtonsoft.Json;
+    using System.Collections.Concurrent;
     using System.Net;
     using System.Net.Http.Headers;
     using System.Text;
 
     public static class ConsumeApiService
     {
-        private static Dictionary<Guid, HttpClient> httpClients = new Dictionary<Guid, HttpClient>();
+        private static readonly ConcurrentDictionary<Guid, HttpClient> httpClients = new();
 
         public enum ContentTypeEnum
         {
@@ -114,7 +115,7 @@
 
                 try
                 {
-                    httpClients.Add(uuid, client);
+                    httpClients.TryAdd(uuid, client);
                 }
                 catch { }
             }

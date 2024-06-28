@@ -2,17 +2,13 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
     [Table("Order", Schema = "dbo")]
     public class Order
     {
         public Order()
         {
-            this.OrderDetails = [];
+            OrderDetails = [];
         }
 
         [Key]

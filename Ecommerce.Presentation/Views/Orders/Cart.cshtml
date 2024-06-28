@@ -1,8 +1,8 @@
-﻿@model Ecommerce.Domain.DTOs.CustomerDTO
+﻿@model Ecommerce.Application.DTOs.CustomerDTO
 @{
     ViewBag.Title = "Página de Compras";
-    var products = ViewData["Products"] as List<Ecommerce.Domain.DTOs.ProductDTO>;
-    var cart = ViewBag.CartItems as List<Ecommerce.Domain.DTOs.CartItemDTO>;
+    var products = ViewData["Products"] as List<Ecommerce.Application.DTOs.ProductDTO>;
+    var cart = ViewBag.CartItems as List<Ecommerce.Application.DTOs.CartItemDTO>;
 }
 
 <h1>@ViewBag.Title</h1>

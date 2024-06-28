@@ -9,6 +9,8 @@ RequestPipelineBuilder.Configure(app);
 
 // Configure APIs 
 CommonEndpoint.RegisterApis(app);
+OrderEndpoint.RegisterApis(app);
+OrderDetailEndpoint.RegisterApis(app);
 
 // Start the app
 app.Run();

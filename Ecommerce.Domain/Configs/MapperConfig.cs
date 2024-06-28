@@ -9,6 +9,8 @@ namespace Ecommerce.Domain.Configs
         public MapperConfig()
         {
             CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderDetail, OrderDetail>().ReverseMap();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace Ecommerce.OrderManagementMS.WebApi.Bootstrapper
 {
+    using Ecommerce.Application.Service;
     using Ecommerce.Domain.Constants;
+    using Ecommerce.Domain.Interfaces;
     using FluentValidation;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.OpenApi.Models;
@@ -42,7 +44,8 @@
             });
 
             // Services
-            //builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 
             // Logs
             builder.Logging.ClearProviders();

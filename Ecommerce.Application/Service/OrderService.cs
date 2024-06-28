@@ -33,7 +33,7 @@
             };
             unitOfWork.Repository<Order>().Insert(order);
             unitOfWork.Save();
-            return GetOrderById(order.OrderID);
+            return mapper.Map<OrderDTO>(order);
         }
     }
 }

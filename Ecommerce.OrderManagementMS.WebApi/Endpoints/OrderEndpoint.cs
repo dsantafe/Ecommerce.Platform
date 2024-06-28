@@ -50,7 +50,7 @@
             .Produces<List<OrderDTO>>(200)
             .Produces(404);
 
-            app.MapPost("/api/order", async ([FromServices] IValidator<OrderCreateDTO> validator,
+            app.MapPost("/api/orders", async ([FromServices] IValidator<OrderCreateDTO> validator,
                 [FromServices] IOrderService orderService,
                 [FromServices] IOrderDetailService orderDetailService,
                 [FromBody] OrderCreateDTO orderCreateDTO) =>

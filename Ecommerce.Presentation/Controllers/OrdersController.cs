@@ -99,7 +99,7 @@
                 Items = CartItems
             };
 
-            string result = ConsumeApiService.ConsumePost($"{urlBaseOrderManagementMs}/api/orders", JsonConvert.SerializeObject(order));
+            string result = ConsumeApiService.ConsumePost($"{urlBaseOrderManagementMs}/api/orders", order);
             ResponseDTO response = JsonConvert.DeserializeObject<ResponseDTO>(result);
             if (!response.IsSuccess)
             {

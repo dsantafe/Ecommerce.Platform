@@ -1,6 +1,6 @@
 ﻿@model Ecommerce.Application.DTOs.CustomerDTO
 @{
-    ViewBag.Title = "Página de Compras";
+    ViewBag.Title = "Compras";
     var products = ViewData["Products"] as List<Ecommerce.Application.DTOs.ProductDTO>;
     var cart = ViewBag.CartItems as List<Ecommerce.Application.DTOs.CartItemDTO>;
 }
@@ -9,7 +9,7 @@
 
 <div asp-validation-summary="All" class="text-danger"></div>
 <form method="post">
-    <h2>Información del Cliente</h2>  
+    <h2>Información del Cliente</h2>
 
     <div class="form-floating">
         <input type="text" id="Name" asp-for="Name" class="form-control" />
@@ -38,6 +38,7 @@
     </div>
     <button type="submit" formaction="/Orders/AddToCart" class="btn btn-outline-primary">Agregar al Carro</button>
     <button type="submit" formaction="/Orders/Checkout" class="btn btn-outline-success">Confirmar Compra</button>
+    <button type="submit" formaction="/Orders/Index" class="btn btn-outline-info">Volver</button>
 </form>
 
 <h2>Carro de Compras</h2>

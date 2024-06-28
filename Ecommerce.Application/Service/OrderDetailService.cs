@@ -1,37 +1,51 @@
-﻿using AutoMapper;
-using Ecommerce.Domain.Data;
-using Ecommerce.Domain.DTOs;
-using Ecommerce.Domain.Entities;
-using Ecommerce.Domain.Interfaces;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace Ecommerce.Application.Service
+﻿namespace Ecommerce.Application.Service
 {
-    public class OrderDetailService(IMemoryCache memoryCache,
-        IMapper mapper,EcommerceContext ecommerceContext) : IOrderDetailService
+    using AutoMapper;
+    using Ecommerce.Application.DTOs;
+    using Ecommerce.Application.Interfaces;
+    using Ecommerce.Domain.Data;
+    using Ecommerce.Domain.Entities;
+
+    public class OrderDetailService(IMapper mapper, EcommerceContext ecommerceContext) : IOrderDetailService
     {
-        IList<OrderDetail> _orderDetails;
-      
-        
+        private readonly UnitOfWork unitOfWork = new(ecommerceContext);
 
-        public List<OrderDetailDto> GetOrderDetailById(int orderId)
+        public List<OrderDetailDTO> GetOrderDetailsByOrderId(int orderId)
         {
+            List<OrderDetail> orderDetails = unitOfWork.Repository<OrderDetail>()
+                .Get(filter: x => x.OrderID == orderId, includeProperties: "Order,Product")
+                .ToList();
 
-            IUnitOfWork _unitOfWork = new UnitOfWork(ecommerceContext);
-            _orderDetails = _unitOfWork.Repository<OrderDetail>().Get(filter: x=> x.OrderID == orderId, includeProperties: "Order,Product").ToList();
-
-            var orderdetails = _orderDetails.Select(x => new OrderDetailDto()
+            return orderDetails.Select(x => new OrderDetailDTO
             {
+                OrderDetailID = x.OrderDetailID,
                 OrderId = x.OrderID,
                 ProductId = x.ProductID,
                 UnitPrice = x.UnitPrice,
                 Quantity = x.Quantity,
                 Subtotal = x.Subtotal,
-                OrderName = x.Order.CustomerName,
                 ProductName = x.Product.Name
             }).ToList();
-            return orderdetails;
         }
 
+        public OrderDetailDTO GetOrderDetailById(int id)
+        {
+            OrderDetailDTO orderDetail = mapper.Map<OrderDetailDTO>(unitOfWork.Repository<OrderDetail>().GetByID(id));
+            return orderDetail;
+        }
+
+        public OrderDetailDTO CreateOrderDetail(int orderID, int productID, int quantity, decimal unitPrice)
+        {
+            OrderDetail orderDetail = new()
+            {
+                OrderID = orderID,
+                ProductID = productID,
+                Quantity = quantity,
+                UnitPrice = unitPrice
+            };
+            unitOfWork.Repository<OrderDetail>().Insert(orderDetail);
+            unitOfWork.Save();
+            return mapper.Map<OrderDetailDTO>(orderDetail);
+        }
     }
 }

@@ -32,7 +32,7 @@
             MemoryCache memoryCache = new(new MemoryCacheOptions { SizeLimit = CacheConstant.SizeLimit });
             builder.Services.AddSingleton<IMemoryCache>(memoryCache);
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            builder.Services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EccomerceContext")));
+            builder.Services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EcommerceContext")));
 
             builder.Services.AddSwaggerGen(options =>
             {

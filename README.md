@@ -56,6 +56,9 @@ $ docker ps
 ## A template for an API using Clean Architecture and .NET Minimal API's.
 ![template](./assets/template.png)
 
+## ER Diagram and Relationships: A database schema that includes different types of relationships (e.g., one-to-one, one-to-many, many-to-many).
+![template](./assets/er-diagram.jpg)
+
 # Links
 - Config repo: https://github.com/dsantafe/Ecommerce.Platform
 - Docs E-commerce Platform repo: https://gist.github.com/AndresLinktic/3e26ea0c4786e81f80b316432687a583

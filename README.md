@@ -41,13 +41,19 @@ $ docker ps
 ```
 
 4. Access the application http://localhost:3000
+## Index Pages
+![architecture](./assets/index_page.png)
+
+## Cart Page
+![architecture](./assets/cart_page.png)
+
+## Confirm Page
+![architecture](./assets/confirm_page.png)
 
 ## Architecture
-
 ![architecture](./assets/architecture.png)
 
 ## A template for an API using Clean Architecture and .NET Minimal API's.
-
 ![template](./assets/template.png)
 
 # Links

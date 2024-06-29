@@ -2,9 +2,11 @@
 {
     using Ecommerce.Application.DTOs;
     using Ecommerce.Application.Service;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
+    [Authorize]
     public class OrdersController : Controller
     {
         private static IList<ProductDTO> Products;

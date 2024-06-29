@@ -1,5 +1,7 @@
 ﻿namespace Ecommerce.Presentation.Bootstrapper
 {
+    using Microsoft.AspNetCore.Authentication.Cookies;
+
     /// <summary>
     /// App Builder 
     /// </summary>
@@ -23,6 +25,12 @@
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true; // Necesario para la GDPR si aplica
             });
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                });
 
             WebApplication app = builder.Build();
             return app;
